@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>website is currently being built.....</title>
+  <meta name="description" content="An interactive 2D manga sketchbook under-construction page with an interactive Umaru-style anime chibi character.">
+
+  <!-- Google Fonts: Hand-drawn manga lettering, display, & bold architectural drafting font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Patrick+Hand&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Subtle Manga Halftone & Sketch Paper Texture Layer -->
+  <div class="manga-paper-texture" aria-hidden="true"></div>
+
+  <!-- Main 2D Manga Stage -->
+  <main class="manga-stage" id="manga-stage">
+    <!-- Centered Manga Narration Title Card -->
+    <header class="manga-title-card" id="title-card">
+      <div class="title-pin top-left" aria-hidden="true"></div>
+      <div class="title-pin top-right" aria-hidden="true"></div>
+      <div class="title-corner-screentone" aria-hidden="true"></div>
+      <h1 class="manga-headline">
+        <span class="headline-text">website is currently being built</span><span class="animated-dots" aria-hidden="true"><span class="dot">.</span><span class="dot">.</span><span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></span>
+      </h1>
+    </header>
+
+    <!-- Unfinished Fading Handle in Background (@ryanc / @ryancuizon) -->
+    <div class="manga-draft-handle" id="draft-handle" aria-hidden="true">
+      <div class="draft-watermark">
+        <span class="handle-solid">@ryanc</span><span class="draft-cursor" aria-hidden="true"></span><span class="handle-unfinished"><span class="fading-char char-u">u</span><span class="fading-char char-i">i</span><span class="fading-char char-z">z</span><span class="fading-char char-o">o</span><span class="fading-char char-n">n</span></span>
+      </div>
+    </div>
+
+    <!-- 60fps Full-Screen Manga Ink FX Canvas (Action bursts, speedlines, onomatopoeia, dust) -->
+    <canvas id="fx-canvas"></canvas>
+
+    <!-- Interactive 2D Umaru-Style Chibi Character Actor -->
+    <div class="chibi-actor state-idle" id="chibi-actor" role="button" tabindex="0" aria-label="Interactive chibi character. Hit with cursor or click to interact.">
+      <!-- Comic Speech Bubble -->
+      <div class="chibi-speech-bubble" id="chibi-speech" aria-live="polite">
+        <span class="speech-text" id="speech-text">zZz...</span>
+        <div class="speech-tail" aria-hidden="true"></div>
+      </div>
+
+      <!-- SVG Rigged 2D Character -->
+      <svg class="chibi-svg-root" id="chibi-svg" viewBox="0 0 220 220" width="220" height="220" fill="none">
+        <defs>
+          <!-- Authentic Manga Halftone Screentone Pattern (Dots) -->
+          <pattern id="screentone-dots" width="6" height="6" patternUnits="userSpaceOnUse">
+            <circle cx="3" cy="3" r="1.1" fill="#141413" opacity="0.18"/>
+          </pattern>
+
+          <!-- Authentic Manga Cross-Hatch Pattern -->
+          <pattern id="screentone-hatch" width="8" height="8" patternUnits="userSpaceOnUse">
+            <line x1="0" y1="8" x2="8" y2="0" stroke="#141413" stroke-width="0.8" opacity="0.22"/>
+          </pattern>
+
+          <!-- Soft Ink Shadow Gradient -->
+          <radialGradient id="shadow-gradient" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#141413" stop-opacity="0.28"/>
+            <stop offset="65%" stop-color="#141413" stop-opacity="0.12"/>
+            <stop offset="100%" stop-color="#141413" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+
+        <!-- Floor Drop Shadow (Scales with jump height) -->
+        <ellipse id="chibi-shadow" cx="110" cy="208" rx="54" ry="10" fill="url(#shadow-gradient)"/>
+
+        <!-- Root Transform Group for Squash, Stretch & Tilt -->
+        <g id="chibi-squash-root" transform-origin="110 200">
+
+          <!-- ================= 1. FRONT POSE (Umaru-chan Front View) ================= -->
+          <g id="chibi-front-pose" class="chibi-pose">
+            <!-- Hamster Hooded Cape (Umaru-chan's Iconic Hood in Manga Black & White) -->
+            <g id="chibi-cape-group">
+              <!-- Hamster Ears -->
+              <g id="chibi-ears">
+                <!-- Left Ear -->
+                <g id="hood-ear-left" class="hood-ear" transform-origin="58 32">
+                  <path d="M42 46 C36 28, 52 14, 68 28 C74 34, 72 44, 68 48 Z" fill="#ffffff" stroke="#141413" stroke-width="3.2" stroke-linejoin="round"/>
+                  <path d="M48 42 C44 32, 54 22, 64 32 C66 36, 64 42, 60 44 Z" fill="#e8e4dc" stroke="#141413" stroke-width="1.8"/>
+                </g>
+                <!-- Right Ear -->
+                <g id="hood-ear-right" class="hood-ear" transform-origin="162 32">
+                  <path d="M178 46 C184 28, 168 14, 152 28 C146 34, 148 44, 152 48 Z" fill="#ffffff" stroke="#141413" stroke-width="3.2" stroke-linejoin="round"/>
+                  <path d="M172 42 C176 32, 166 22, 156 32 C154 36, 156 42, 160 44 Z" fill="#e8e4dc" stroke="#141413" stroke-width="1.8"/>
+                </g>
+              </g>
+
+              <!-- Hamster Cape Back Folds & Volume (Umaru Bean Shape) -->
+              <path id="hood-cloak-back" d="M46 92 C28 128, 34 182, 52 195 C74 204, 146 204, 168 195 C186 182, 192 128, 174 92 Z" fill="#ffffff" stroke="#141413" stroke-width="3.2" stroke-linejoin="round"/>
+              <!-- Cloak Shading screentone -->
+              <path d="M46 92 C28 128, 34 182, 52 195 C74 204, 146 204, 168 195 C186 182, 192 128, 174 92 Z" fill="url(#screentone-dots)"/>
+              <!-- Cape Fold Creases -->
+              <path d="M60 170 Q70 190 85 194" stroke="#141413" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+              <path d="M160 170 Q150 190 135 194" stroke="#141413" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+            </g>
+
+            <!-- Stubby Feet Peeking Under Cape -->
+            <g id="chibi-feet-group">
+              <ellipse id="chibi-foot-left" cx="86" cy="198" rx="13" ry="8" fill="#ffffff" stroke="#141413" stroke-width="2.8"/>
+              <ellipse id="chibi-foot-right" cx="134" cy="198" rx="13" ry="8" fill="#ffffff" stroke="#141413" stroke-width="2.8"/>
+            </g>
+
+            <!-- Hamster Hood Head Enclosure & Face Opening -->
+            <g id="chibi-head-hood">
+              <!-- Large Round Hood Rim -->
+              <path d="M42 94 C38 42, 74 20, 110 20 C146 20, 182 42, 178 94 C176 138, 144 154, 110 154 C76 154, 44 138, 42 94 Z" fill="#ffffff" stroke="#141413" stroke-width="3.5" stroke-linejoin="round"/>
+              <!-- Hood Top Screentone Accent -->
+              <path d="M52 50 C70 30, 150 30, 168 50 C146 38, 74 38, 52 50 Z" fill="url(#screentone-dots)"/>
+
+              <!-- Hamster Face on Top of Hood (Crucial Umaru-chan Feature!) -->
+              <g id="hood-hamster-face">
+                <!-- Left Hamster Eye -->
+                <circle cx="92" cy="46" r="3.4" fill="#141413"/>
+                <circle cx="91" cy="45" r="1.1" fill="#ffffff"/>
+                <!-- Right Hamster Eye -->
+                <circle cx="128" cy="46" r="3.4" fill="#141413"/>
+                <circle cx="127" cy="45" r="1.1" fill="#ffffff"/>
+                <!-- Hamster Nose / Snout -->
+                <polygon points="110,48 107,52 113,52" fill="#141413"/>
+                <!-- Hamster Cheeks (Manga screentone blush) -->
+                <ellipse cx="83" cy="49" rx="4.5" ry="3" fill="#e8e4dc" stroke="#141413" stroke-width="0.8"/>
+                <ellipse cx="137" cy="49" rx="4.5" ry="3" fill="#e8e4dc" stroke="#141413" stroke-width="0.8"/>
+                <!-- Hamster Mouth (ω) -->
+                <path d="M107 53 Q110 56 113 53" stroke="#141413" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+              </g>
+
+              <!-- Hood Interior Opening (Frames face) -->
+              <ellipse cx="110" cy="108" rx="54" ry="43" fill="#141413"/>
+              <ellipse cx="110" cy="108" rx="52" ry="41" fill="#faf8f5"/>
+
+              <!-- White Inner Shirt / Romper Collar -->
+              <path d="M85 146 Q110 162 135 146 Q128 178 110 182 Q92 178 85 146 Z" fill="#ffffff" stroke="#141413" stroke-width="2.4"/>
+              <!-- Zipper line -->
+              <line x1="110" y1="152" x2="110" y2="180" stroke="#141413" stroke-width="1.8" stroke-dasharray="2 2"/>
+
+              <!-- Cute Neck Ribbon / Clasp -->
+              <g id="hood-clasp" transform="translate(110, 150)">
+                <circle cx="0" cy="0" r="5" fill="#ffffff" stroke="#141413" stroke-width="2.4"/>
+                <path d="M-4 2 L-10 9 L-1 6 Z" fill="#ffffff" stroke="#141413" stroke-width="1.8"/>
+                <path d="M4 2 L10 9 L1 6 Z" fill="#ffffff" stroke="#141413" stroke-width="1.8"/>
+              </g>
+            </g>
+
+            <!-- Hair (Manga Black & White Blonde Sheen) -->
+            <g id="chibi-hair-group">
+              <!-- Left Side Flowing Hair Lock -->
+              <path d="M60 106 C50 126, 44 154, 48 180 C54 182, 60 176, 62 164 C64 150, 68 135, 72 118 Z" fill="#ffffff" stroke="#141413" stroke-width="2.6" stroke-linejoin="round"/>
+              <path d="M60 106 C50 126, 44 154, 48 180 C54 182, 60 176, 62 164 C64 150, 68 135, 72 118 Z" fill="url(#screentone-dots)"/>
+              <!-- Right Side Flowing Hair Lock -->
+              <path d="M160 106 C170 126, 176 154, 172 180 C166 182, 160 176, 158 164 C156 150, 152 135, 148 118 Z" fill="#ffffff" stroke="#141413" stroke-width="2.6" stroke-linejoin="round"/>
+              <path d="M160 106 C170 126, 176 154, 172 180 C166 182, 160 176, 158 164 C156 150, 152 135, 148 118 Z" fill="url(#screentone-dots)"/>
+
+              <!-- Anime Hair Bangs Peeking Out of Hood -->
+              <g id="chibi-hair-bangs">
+                <!-- Center Bang -->
+                <path d="M96 74 Q110 98 112 96 Q116 86 126 74 Z" fill="#ffffff" stroke="#141413" stroke-width="2.4" stroke-linejoin="round"/>
+                <!-- Left Bang -->
+                <path d="M72 82 Q84 104 90 99 Q94 88 100 76 Z" fill="#ffffff" stroke="#141413" stroke-width="2.4" stroke-linejoin="round"/>
+                <!-- Right Bang -->
+                <path d="M148 82 Q136 104 130 99 Q126 88 120 76 Z" fill="#ffffff" stroke="#141413" stroke-width="2.4" stroke-linejoin="round"/>
+                <!-- Hair Highlights (Manga ink sheen) -->
+                <path d="M84 84 Q94 89 90 92" stroke="#141413" stroke-width="1.8" stroke-linecap="round"/>
+                <path d="M128 84 Q136 89 132 92" stroke="#141413" stroke-width="1.8" stroke-linecap="round"/>
+              </g>
+            </g>
+
+            <!-- Construction Safety Hardhat (Pure B&W Manga Edition) -->
+            <g id="chibi-hardhat" transform-origin="110 24">
+              <!-- Helmet Dome -->
+              <path d="M76 28 C74 12, 90 4, 110 4 C130 4, 146 12, 144 28 Z" fill="#ffffff" stroke="#141413" stroke-width="3" stroke-linejoin="round"/>
+              <!-- Helmet Brim / Visor Shelf -->
+              <path d="M72 28 C90 32, 130 32, 148 28 C144 32, 128 35, 110 35 C92 35, 76 32, 72 28 Z" fill="#e8e4dc" stroke="#141413" stroke-width="2.4" stroke-linejoin="round"/>
+              <!-- Solid Black Safety Cross Emblem (+) -->
+              <rect x="107" y="11" width="6" height="14" fill="#141413"/>
+              <rect x="103" y="15" width="14" height="6" fill="#141413"/>
+              <!-- Helmet Gloss Highlight -->
+              <path d="M84 14 C90 9, 102 7, 106 7" stroke="#141413" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+              <!-- Chin Strap -->
+              <path d="M77 28 Q73 70 88 120" stroke="#141413" stroke-width="1.4" stroke-dasharray="2 2" fill="none"/>
+            </g>
+
+            <!-- Face Group (Cheeks, Eyes, Mouth) -->
+            <g id="chibi-face-group">
+              <!-- Authentic Manga Blush Marks (///) on Cheeks (No pink fill) -->
+              <g id="chibi-blush" class="blush-marks">
+                <!-- Left Cheek -->
+                <line x1="70" y1="118" x2="76" y2="124" stroke="#141413" stroke-width="2" stroke-linecap="round"/>
+                <line x1="75" y1="117" x2="81" y2="123" stroke="#141413" stroke-width="2" stroke-linecap="round"/>
+                <line x1="80" y1="118" x2="86" y2="124" stroke="#141413" stroke-width="2" stroke-linecap="round"/>
+                <!-- Right Cheek -->
+                <line x1="138" y1="118" x2="144" y2="124" stroke="#141413" stroke-width="2" stroke-linecap="round"/>
+                <line x1="143" y1="117" x2="149" y2="123" stroke="#141413" stroke-width="2" stroke-linecap="round"/>
+                <line x1="148" y1="118" x2="154" y2="124" stroke="#141413" stroke-width="2" stroke-linecap="round"/>
+              </g>
+
+              <!-- ================= SWITCHABLE EYE EXPRESSIONS ================= -->
+              <g id="chibi-eyes-container">
+                <!-- 1. Default Sparkly Umaru Anime Eyes -->
+                <g class="eye-state active" id="eyes-default">
+                  <!-- Left Eye -->
+                  <ellipse cx="84" cy="108" rx="10" ry="13" fill="#141413"/>
+                  <ellipse cx="84" cy="113" rx="7" ry="6" fill="#e8e4dc"/>
+                  <ellipse cx="84" cy="113" rx="7" ry="6" fill="url(#screentone-dots)"/>
+                  <circle cx="81" cy="103" r="4.2" fill="#ffffff"/>
+                  <circle cx="87" cy="114" r="2.2" fill="#ffffff"/>
+                  <circle cx="83" cy="118" r="1.2" fill="#ffffff"/>
+                  <path d="M72 100 Q84 93 96 100" stroke="#141413" stroke-width="3.4" stroke-linecap="round" fill="none"/>
+
+                  <!-- Right Eye -->
+                  <ellipse cx="136" cy="108" rx="10" ry="13" fill="#141413"/>
+                  <ellipse cx="136" cy="113" rx="7" ry="6" fill="#e8e4dc"/>
+                  <ellipse cx="136" cy="113" rx="7" ry="6" fill="url(#screentone-dots)"/>
+                  <circle cx="133" cy="103" r="4.2" fill="#ffffff"/>
+                  <circle cx="139" cy="114" r="2.2" fill="#ffffff"/>
+                  <circle cx="135" cy="118" r="1.2" fill="#ffffff"/>
+                  <path d="M124 100 Q136 93 148 100" stroke="#141413" stroke-width="3.4" stroke-linecap="round" fill="none"/>
+                </g>
+
+                <!-- 2. Happy Arcs (^ ^) -->
+                <g class="eye-state" id="eyes-happy">
+                  <path d="M74 110 Q84 97 94 110" stroke="#141413" stroke-width="3.6" stroke-linecap="round" fill="none"/>
+                  <path d="M126 110 Q136 97 146 110" stroke="#141413" stroke-width="3.6" stroke-linecap="round" fill="none"/>
+                </g>
+
+                <!-- 3. Bonked / Squeezed Pain (> <) with Anime Tears -->
+                <g class="eye-state" id="eyes-bonked">
+                  <path d="M74 102 L86 110 L74 118" stroke="#141413" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                  <path d="M146 102 L134 110 L146 118" stroke="#141413" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                  <path d="M68 114 C64 118, 64 124, 69 124 C73 124, 73 118, 68 114 Z" fill="#141413"/>
+                  <path d="M152 114 C156 118, 156 124, 151 124 C147 124, 147 118, 152 114 Z" fill="#141413"/>
+                </g>
+
+                <!-- 4. Dizzy Spirals (@ @) -->
+                <g class="eye-state" id="eyes-dizzy">
+                  <path d="M84 108 m -9 0 a 9 9 0 1 0 18 0 a 6 6 0 1 0 -12 0 a 3 3 0 1 0 6 0" stroke="#141413" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+                  <path d="M136 108 m -9 0 a 9 9 0 1 0 18 0 a 6 6 0 1 0 -12 0 a 3 3 0 1 0 6 0" stroke="#141413" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+                </g>
+
+                <!-- 5. Angry Pout / Glare (¬ ¬) -->
+                <g class="eye-state" id="eyes-pout">
+                  <line x1="74" y1="102" x2="94" y2="107" stroke="#141413" stroke-width="3.8" stroke-linecap="round"/>
+                  <ellipse cx="84" cy="111" rx="7" ry="5" fill="#141413"/>
+                  <line x1="146" y1="102" x2="126" y2="107" stroke="#141413" stroke-width="3.8" stroke-linecap="round"/>
+                  <ellipse cx="136" cy="111" rx="7" ry="5" fill="#141413"/>
+                </g>
+
+                <!-- 6. Shocked / Blank Dots (• •) -->
+                <g class="eye-state" id="eyes-blank">
+                  <circle cx="84" cy="108" r="4.2" fill="#141413"/>
+                  <circle cx="136" cy="108" r="4.2" fill="#141413"/>
+                </g>
+              </g>
+
+              <!-- ================= SWITCHABLE MOUTH EXPRESSIONS ================= -->
+              <g id="chibi-mouth-container">
+                <!-- 1. Cat Mouth (:3 / ω) -->
+                <g class="mouth-state active" id="mouth-cat">
+                  <path d="M103 126 Q107 131 110 128 Q113 131 117 126" stroke="#141413" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+                </g>
+
+                <!-- 2. Happy Open Mouth (D) -->
+                <g class="mouth-state" id="mouth-open">
+                  <path d="M103 124 Q110 122 117 124 Q110 137 103 124 Z" fill="#141413" stroke="#141413" stroke-width="2.2" stroke-linejoin="round"/>
+                  <path d="M106 128 Q110 134 114 128 Z" fill="#e8e4dc"/>
+                </g>
+
+                <!-- 3. Wavy Dizzy Mouth (~) -->
+                <g class="mouth-state" id="mouth-wavy">
+                  <path d="M102 127 Q106 123 110 127 Q114 131 118 127" stroke="#141413" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+                </g>
+
+                <!-- 4. Pout Triangle Mouth (▲) -->
+                <g class="mouth-state" id="mouth-pout">
+                  <path d="M106 129 L110 124 L114 129 Z" fill="#141413" stroke="#141413" stroke-width="2" stroke-linejoin="round"/>
+                </g>
+              </g>
+
+              <!-- Manga Anger Vein (💢) on Hood Temple -->
+              <g id="manga-anger-vein" class="anger-vein" transform="translate(150, 48) scale(0.9)" opacity="0">
+                <path d="M-6 -6 Q0 -2 6 -6 Q2 0 6 6 Q0 2 -6 6 Q-2 0 -6 -6 Z" fill="#141413" stroke="#141413" stroke-width="1.8"/>
+                <line x1="-5" y1="0" x2="5" y2="0" stroke="#faf8f5" stroke-width="1.6"/>
+                <line x1="0" y1="-5" x2="0" y2="5" stroke="#faf8f5" stroke-width="1.6"/>
+              </g>
+
+              <!-- Manga Sweat Drop (💧) Beside Face -->
+              <g id="manga-sweat-drop" class="sweat-drop" transform="translate(162, 92)" opacity="0">
+                <path d="M0 -12 C-6 -4 -6 6 0 8 C6 6 6 -4 0 -12 Z" fill="#ffffff" stroke="#141413" stroke-width="2.4" stroke-linejoin="round"/>
+                <line x1="-1" y1="-4" x2="-1" y2="4" stroke="#141413" stroke-width="1.4" stroke-linecap="round"/>
+              </g>
+            </g>
+
+            <!-- Stubby Arms & Craftsman Mallet -->
+            <g id="chibi-arms-group">
+              <!-- Left Arm (Holding the block / steadying) -->
+              <g id="chibi-arm-left" class="chibi-arm" transform-origin="54 148">
+                <path d="M54 142 C38 144, 32 158, 42 170 C52 178, 66 170, 62 154 Z" fill="#ffffff" stroke="#141413" stroke-width="2.8" stroke-linejoin="round"/>
+              </g>
+
+              <!-- Right Arm (Holding Builder's Mallet for Rhythmic Hammering!) -->
+              <g id="chibi-arm-right" class="chibi-arm" transform-origin="166 148">
+                <!-- Arm Sleeve & Hand -->
+                <path d="M166 142 C182 144, 188 158, 178 170 C168 178, 154 170, 158 154 Z" fill="#ffffff" stroke="#141413" stroke-width="2.8" stroke-linejoin="round"/>
+
+                <!-- Mallet Attached to Hand (B&W Wood) -->
+                <g id="chibi-hammer" transform="translate(170, 160) rotate(-25)">
+                  <!-- Mallet Handle -->
+                  <rect x="-3" y="-22" width="6" height="34" rx="2" fill="#ffffff" stroke="#141413" stroke-width="2"/>
+                  <!-- Mallet Head -->
+                  <rect x="-14" y="-30" width="28" height="15" rx="3" fill="#e8e4dc" stroke="#141413" stroke-width="2.6"/>
+                  <!-- Mallet End Cap Accent -->
+                  <line x1="-14" y1="-22" x2="14" y2="-22" stroke="#141413" stroke-width="1.4"/>
+                </g>
+              </g>
+            </g>
+          </g>
+
+          <!-- ================= 2. BACK POSE (Umaru-chan Turning at Back & Building!) ================= -->
+          <g id="chibi-back-pose" class="chibi-pose">
+            <!-- Feet (Seen from behind) -->
+            <g id="back-chibi-feet">
+              <ellipse cx="86" cy="198" rx="13" ry="8" fill="#ffffff" stroke="#141413" stroke-width="2.8"/>
+              <ellipse cx="134" cy="198" rx="13" ry="8" fill="#ffffff" stroke="#141413" stroke-width="2.8"/>
+            </g>
+
+            <!-- Hood Cloak Back (Large Bean Silhouette Seen From Rear) -->
+            <g id="back-chibi-cloak">
+              <path d="M42 94 C38 40, 74 18, 110 18 C146 18, 182 40, 178 94 C186 136, 180 186, 166 196 C144 204, 76 204, 54 196 C40 186, 34 136, 42 94 Z" fill="#ffffff" stroke="#141413" stroke-width="3.5" stroke-linejoin="round"/>
+              <!-- Screentone Depth on Cloak Back -->
+              <path d="M42 94 C38 40, 74 18, 110 18 C146 18, 182 40, 178 94 C186 136, 180 186, 166 196 C144 204, 76 204, 54 196 C40 186, 34 136, 42 94 Z" fill="url(#screentone-dots)"/>
+              <!-- Back Seam & Fold Creases -->
+              <line x1="110" y1="36" x2="110" y2="176" stroke="#141413" stroke-width="2.2" stroke-dasharray="3 3"/>
+              <path d="M64 165 Q80 185 96 190" stroke="#141413" stroke-width="2" stroke-linecap="round" fill="none"/>
+              <path d="M156 165 Q140 185 124 190" stroke="#141413" stroke-width="2" stroke-linecap="round" fill="none"/>
+
+              <!-- Iconic Umaru Hamster Ball Tail on Lower Back! -->
+              <g id="chibi-hamster-tail" transform="translate(110, 182)">
+                <circle cx="0" cy="0" r="11" fill="#ffffff" stroke="#141413" stroke-width="2.8"/>
+                <path d="M-4 -3 Q0 -8 4 -3" stroke="#141413" stroke-width="1.8" fill="none"/>
+                <circle cx="0" cy="0" r="11" fill="url(#screentone-dots)"/>
+              </g>
+
+              <!-- Rear Hamster Ears -->
+              <path d="M44 44 C38 28, 54 16, 68 28 C72 32, 70 42, 66 46 Z" fill="#ffffff" stroke="#141413" stroke-width="3.2" stroke-linejoin="round"/>
+              <path d="M176 44 C182 28, 166 16, 152 28 C148 32, 150 42, 154 46 Z" fill="#ffffff" stroke="#141413" stroke-width="3.2" stroke-linejoin="round"/>
+
+              <!-- Peek-Back Face Profile (Looking back over shoulder while building) -->
+              <g id="back-peek-face" class="back-peek-face">
+                <!-- Cheerful Manga Side Face Profile -->
+                <path d="M152 74 C168 80, 175 98, 168 114 C162 124, 150 128, 140 126" fill="#faf8f5" stroke="#141413" stroke-width="3" stroke-linejoin="round"/>
+                <!-- Anime Wink Eye looking at viewer -->
+                <path d="M152 90 Q160 84 166 91" stroke="#141413" stroke-width="3.2" stroke-linecap="round" fill="none"/>
+                <!-- Sparkle pupil -->
+                <circle cx="158" cy="92" r="3.2" fill="#141413"/>
+                <circle cx="157" cy="91" r="1" fill="#ffffff"/>
+                <!-- Cheek Blush Hash Lines /// -->
+                <line x1="152" y1="104" x2="157" y2="109" stroke="#141413" stroke-width="2" stroke-linecap="round"/>
+                <line x1="156" y1="103" x2="161" y2="108" stroke="#141413" stroke-width="2" stroke-linecap="round"/>
+                <!-- Happy Cat Mouth :3 -->
+                <path d="M148 114 Q153 118 158 114" stroke="#141413" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+                <!-- Anime Sweat Drop when working hard -->
+                <path d="M168 76 C165 72, 165 67, 168 65 C171 67, 171 72, 168 76 Z" fill="#ffffff" stroke="#141413" stroke-width="1.6"/>
+              </g>
+            </g>
+
+            <!-- Rear View of Hardhat (Knob, rim, straps) -->
+            <g id="back-chibi-hardhat" transform-origin="110 24">
+              <path d="M74 26 C72 10, 88 4, 110 4 C132 4, 148 10, 146 26 Z" fill="#ffffff" stroke="#141413" stroke-width="3" stroke-linejoin="round"/>
+              <path d="M70 26 C88 30, 132 30, 150 26 C146 30, 130 33, 110 33 C90 33, 74 30, 70 26 Z" fill="#e8e4dc" stroke="#141413" stroke-width="2.4" stroke-linejoin="round"/>
+              <!-- Adjustment knob on back of helmet -->
+              <rect x="104" y="24" width="12" height="7" rx="2" fill="#141413"/>
+              <line x1="102" y1="27" x2="118" y2="27" stroke="#ffffff" stroke-width="1"/>
+            </g>
+
+            <!-- ================= ACTIVE WORKING ARMS & TOOLS ================= -->
+            <g id="back-arms-group">
+              <!-- Left Arm (Sawing with Japanese Hand Saw!) -->
+              <g id="back-arm-saw" class="back-saw-arm" transform-origin="56 142">
+                <!-- Arm sleeve -->
+                <path d="M54 136 C38 140, 36 156, 48 166 C58 174, 70 164, 64 148 Z" fill="#ffffff" stroke="#141413" stroke-width="2.8" stroke-linejoin="round"/>
+                <!-- Handsaw tool -->
+                <g id="hand-saw-tool" transform="translate(48, 160)">
+                  <!-- Wooden Handle -->
+                  <path d="M-8 -6 C-14 -12, -4 -20, 2 -16 L6 -10 L0 -2 Z" fill="#ffffff" stroke="#141413" stroke-width="2"/>
+                  <!-- Steel Saw Blade with Triangular Teeth -->
+                  <path d="M4 -12 L44 -26 L48 -14 L6 -4 Z" fill="#e8e4dc" stroke="#141413" stroke-width="2.2"/>
+                  <!-- Saw Teeth Row -->
+                  <path d="M6 -4 L10 -8 L14 -5 L18 -9 L22 -6 L26 -10 L30 -7 L34 -11 L38 -8 L42 -12 L46 -9 L48 -14" stroke="#141413" stroke-width="1.8" fill="#141413"/>
+                </g>
+                <!-- Sawing Action Speedlines -->
+                <g class="saw-speedlines" stroke="#141413" stroke-width="1.6" stroke-linecap="round">
+                  <line x1="68" y1="144" x2="88" y2="144"/>
+                  <line x1="72" y1="148" x2="92" y2="148"/>
+                </g>
+              </g>
+
+              <!-- Right Arm (Swinging Carpenter Mallet / Hammer!) -->
+              <g id="back-arm-hammer" class="back-hammer-arm" transform-origin="164 136">
+                <!-- Arm sleeve -->
+                <path d="M166 136 C182 140, 184 156, 172 166 C162 174, 150 164, 156 148 Z" fill="#ffffff" stroke="#141413" stroke-width="2.8" stroke-linejoin="round"/>
+                <!-- Hammer Tool -->
+                <g id="back-hammer-tool" transform="translate(172, 142) rotate(-35)">
+                  <!-- Mallet Handle -->
+                  <rect x="-3" y="-30" width="6" height="42" rx="2" fill="#ffffff" stroke="#141413" stroke-width="2"/>
+                  <!-- Mallet Head -->
+                  <rect x="-15" y="-40" width="30" height="16" rx="3" fill="#e8e4dc" stroke="#141413" stroke-width="2.6"/>
+                  <line x1="-15" y1="-32" x2="15" y2="-32" stroke="#141413" stroke-width="1.4"/>
+                </g>
+                <!-- Hammer Motion Arc Speedlines -->
+                <g class="hammer-motion-arcs" stroke="#141413" stroke-width="2" stroke-linecap="round" fill="none">
+                  <path d="M148 95 A42 42 0 0 1 190 148" stroke-dasharray="8 4"/>
+                  <path d="M154 90 A48 48 0 0 1 198 144" stroke-dasharray="10 5" opacity="0.6"/>
+                </g>
+              </g>
+            </g>
+
+            <!-- Construction Props & Wood Beam In Front of Chibi -->
+            <g id="back-work-props">
+              <!-- Wooden Construction Beam Being Worked On -->
+              <rect x="34" y="150" width="152" height="24" rx="3" fill="#ffffff" stroke="#141413" stroke-width="2.8"/>
+              <rect x="34" y="150" width="152" height="24" rx="3" fill="url(#screentone-dots)"/>
+              <!-- Saw Cut Groove in Plank with active sawdust notch -->
+              <line x1="78" y1="146" x2="78" y2="174" stroke="#141413" stroke-width="3.5" stroke-linecap="round"/>
+              <polygon points="76,148 80,148 78,156" fill="#141413"/>
+
+              <!-- Stack of Bricks on Plank Right Side (Under Hammer) -->
+              <rect x="146" y="136" width="36" height="15" rx="2" fill="#ffffff" stroke="#141413" stroke-width="2.2"/>
+              <rect x="146" y="136" width="36" height="15" rx="2" fill="url(#screentone-hatch)"/>
+              <rect x="140" y="121" width="36" height="15" rx="2" fill="#ffffff" stroke="#141413" stroke-width="2.2"/>
+              <rect x="140" y="121" width="36" height="15" rx="2" fill="url(#screentone-hatch)"/>
+
+              <!-- Manga Hammer Impact Starburst (Flashes on Strikes!) -->
+              <g class="hammer-impact-spark" transform="translate(158, 120)">
+                <path d="M0 -14 L4 -4 L14 0 L4 4 L0 14 L-4 4 L-14 0 L-4 -4 Z" fill="#ffffff" stroke="#141413" stroke-width="1.8"/>
+                <line x1="-12" y1="-12" x2="12" y2="12" stroke="#141413" stroke-width="1.4"/>
+                <line x1="12" y1="-12" x2="-12" y2="12" stroke="#141413" stroke-width="1.4"/>
+              </g>
+            </g>
+
+            <!-- ================= DYNAMIC CONSTRUCTION EFFECTS ================= -->
+            <!-- Billowing Manga Smoke Clouds -->
+            <g id="back-build-smoke" class="anim-smoke-group">
+              <path class="smoke-puff puff-1" d="M72 142 C64 132, 60 118, 72 112 C82 106, 94 114, 92 126 C98 128, 98 138, 90 142 Z" fill="#faf8f5" stroke="#141413" stroke-width="2.2"/>
+              <path class="smoke-puff puff-2" d="M128 144 C122 134, 126 120, 138 116 C148 112, 158 120, 156 130 C162 134, 160 142, 150 146 Z" fill="#faf8f5" stroke="#141413" stroke-width="2.2"/>
+              <path class="smoke-puff puff-3" d="M96 132 C86 118, 98 102, 114 106 C124 100, 136 110, 130 124 C136 130, 130 140, 118 140 Z" fill="#ffffff" stroke="#141413" stroke-width="2.2"/>
+              <path class="smoke-puff puff-4" d="M50 148 C42 136, 48 124, 60 126 C68 120, 78 128, 74 138 Z" fill="#faf8f5" stroke="#141413" stroke-width="2"/>
+            </g>
+
+            <!-- Flying Nails (With Speed Streaks) -->
+            <g id="back-build-nails" class="anim-nails-group">
+              <!-- Nail 1: flying left -->
+              <g class="flying-nail nail-1" transform="translate(35, 110)">
+                <line x1="0" y1="0" x2="12" y2="6" stroke="#141413" stroke-width="2.2" stroke-linecap="round"/>
+                <line x1="-1" y1="3" x2="2" y2="-3" stroke="#141413" stroke-width="2.6" stroke-linecap="round"/>
+                <line x1="14" y1="7" x2="24" y2="12" stroke="#141413" stroke-width="1.2" stroke-dasharray="3 2" opacity="0.6"/>
+              </g>
+              <!-- Nail 2: flying right -->
+              <g class="flying-nail nail-2" transform="translate(185, 95)">
+                <line x1="0" y1="0" x2="-10" y2="8" stroke="#141413" stroke-width="2.2" stroke-linecap="round"/>
+                <line x1="2" y1="2" x2="-2" y2="-4" stroke="#141413" stroke-width="2.6" stroke-linecap="round"/>
+                <line x1="-12" y1="10" x2="-22" y2="18" stroke="#141413" stroke-width="1.2" stroke-dasharray="3 2" opacity="0.6"/>
+              </g>
+              <!-- Nail 3: flying high -->
+              <g class="flying-nail nail-3" transform="translate(110, 60)">
+                <line x1="0" y1="0" x2="4" y2="12" stroke="#141413" stroke-width="2" stroke-linecap="round"/>
+                <line x1="-3" y1="1" x2="3" y2="-1" stroke="#141413" stroke-width="2.6" stroke-linecap="round"/>
+              </g>
+              <!-- Nail 4: flying left-down -->
+              <g class="flying-nail nail-4" transform="translate(48, 80)">
+                <line x1="0" y1="0" x2="-12" y2="-6" stroke="#141413" stroke-width="2.2" stroke-linecap="round"/>
+                <line x1="-1" y1="-3" x2="2" y2="3" stroke="#141413" stroke-width="2.6" stroke-linecap="round"/>
+                <line x1="-14" y1="-7" x2="-24" y2="-12" stroke="#141413" stroke-width="1.2" stroke-dasharray="3 2" opacity="0.6"/>
+              </g>
+            </g>
+
+            <!-- Flying Bricks (Manga Masonry With Hatching) -->
+            <g id="back-build-bricks" class="anim-bricks-group">
+              <!-- Brick 1: Tumbling high left -->
+              <g class="flying-brick brick-1" transform="translate(20, 70) rotate(-18)">
+                <rect x="-14" y="-8" width="28" height="16" rx="2" fill="#ffffff" stroke="#141413" stroke-width="2.2"/>
+                <rect x="-14" y="-8" width="28" height="16" rx="2" fill="url(#screentone-dots)"/>
+                <circle cx="-7" cy="0" r="2.2" fill="#141413"/>
+                <circle cx="0" cy="0" r="2.2" fill="#141413"/>
+                <circle cx="7" cy="0" r="2.2" fill="#141413"/>
+              </g>
+              <!-- Brick 2: Tumbling right -->
+              <g class="flying-brick brick-2" transform="translate(195, 75) rotate(22)">
+                <rect x="-12" y="-7" width="24" height="14" rx="2" fill="#ffffff" stroke="#141413" stroke-width="2"/>
+                <rect x="-12" y="-7" width="24" height="14" rx="2" fill="url(#screentone-hatch)"/>
+                <circle cx="-5" cy="0" r="1.8" fill="#141413"/>
+                <circle cx="5" cy="0" r="1.8" fill="#141413"/>
+              </g>
+              <!-- Brick 3: Tumbling center-top -->
+              <g class="flying-brick brick-3" transform="translate(105, 45) rotate(15)">
+                <rect x="-10" y="-6" width="20" height="12" rx="1.5" fill="#ffffff" stroke="#141413" stroke-width="2"/>
+                <rect x="-10" y="-6" width="20" height="12" rx="1.5" fill="url(#screentone-dots)"/>
+                <circle cx="0" cy="0" r="1.8" fill="#141413"/>
+              </g>
+            </g>
+
+            <!-- Flying Wood Chips & Sawdust Splinters -->
+            <g id="back-build-wood" class="anim-wood-group">
+              <polygon class="flying-chip chip-1" points="45,130 54,122 58,132 48,136" fill="#ffffff" stroke="#141413" stroke-width="1.8"/>
+              <line class="flying-chip chip-2" x1="68" y1="125" x2="78" y2="115" stroke="#141413" stroke-width="2.4" stroke-linecap="round"/>
+              <line class="flying-chip chip-3" x1="140" y1="120" x2="152" y2="128" stroke="#141413" stroke-width="2" stroke-linecap="round"/>
+              <circle class="flying-chip chip-4" cx="74" cy="138" r="2" fill="#141413"/>
+              <circle class="flying-chip chip-5" cx="82" cy="132" r="1.5" fill="#141413"/>
+              <circle class="flying-chip chip-6" cx="62" cy="140" r="2.2" fill="#141413"/>
+              <path class="flying-chip chip-7" d="M120 125 Q128 112 136 122 Q144 132 152 120" stroke="#141413" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <path class="flying-chip chip-8" d="M60 132 Q52 118 44 128" stroke="#141413" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+            </g>
+          </g>
+
+        </g>
+      </svg>
+    </div>
+
+    <!-- Hand-Drawn Construction & Snack Station on Horizon Line -->
+    <div class="manga-workstation" id="workstation" aria-label="Umaru's construction site and snack break station">
+      <!-- Ground Blueprint / Work Mat -->
+      <div class="work-mat" aria-hidden="true"></div>
+
+      <!-- Bag of Potato Chips (Clickable Snack Prop - Manga Black & White) -->
+      <div class="snack-prop snack-chips" id="prop-chips" role="button" tabindex="0" aria-label="Bag of Potato Chips. Click to crunch!" title="Click to munch potato chips!">
+        <svg viewBox="0 0 84 105" width="84" height="105" fill="none">
+          <!-- Foil Bag Back / Shadow -->
+          <path d="M12 18 L72 18 L68 95 L16 95 Z" fill="#e8e4dc" stroke="#141413" stroke-width="3"/>
+          <!-- Foil Bag Front Body -->
+          <path d="M14 18 Q42 22 70 18 L66 94 Q42 90 18 94 Z" fill="#ffffff" stroke="#141413" stroke-width="2.6"/>
+          <!-- Halftone Screentone Overlay -->
+          <path d="M14 18 Q42 22 70 18 L66 94 Q42 90 18 94 Z" fill="url(#screentone-dots)"/>
+
+          <!-- Top Crimped Seal (Zigzag) -->
+          <path d="M12 18 L16 12 L20 18 L24 12 L28 18 L32 12 L36 18 L40 12 L44 18 L48 12 L52 18 L56 12 L60 18 L64 12 L68 18 L72 12 L72 18 Z" fill="#e8e4dc" stroke="#141413" stroke-width="2"/>
+          <!-- Bottom Crimped Seal -->
+          <path d="M16 94 L20 100 L24 94 L28 100 L32 94 L36 100 L40 94 L44 100 L48 94 L52 100 L56 94 L60 100 L64 94 L68 100 L68 94 Z" fill="#e8e4dc" stroke="#141413" stroke-width="2"/>
+
+          <!-- Solid Black Brand Banner -->
+          <path d="M15 36 Q42 39 69 36 L68 56 Q42 59 16 56 Z" fill="#141413" stroke="#141413" stroke-width="2"/>
+          <!-- Text: POTATO -->
+          <text x="42" y="50" font-family="'Patrick Hand', 'Fredoka', cursive, sans-serif" font-weight="700" font-size="12" fill="#ffffff" text-anchor="middle" letter-spacing="1">POTATO</text>
+
+          <!-- Text: CHIPS -->
+          <text x="42" y="74" font-family="'Fredoka', cursive, sans-serif" font-weight="700" font-size="16" fill="#ffffff" stroke="#141413" stroke-width="3" text-anchor="middle" paint-order="stroke fill">CHIPS</text>
+
+          <!-- Crispy Chips Peeking Out from Top (Manga Ink) -->
+          <path d="M30 14 C26 4, 46 2, 42 12 Z" fill="#ffffff" stroke="#141413" stroke-width="2"/>
+          <path d="M30 14 C26 4, 46 2, 42 12 Z" fill="url(#screentone-dots)"/>
+          <path d="M44 14 C42 6, 60 4, 56 13 Z" fill="#ffffff" stroke="#141413" stroke-width="2"/>
+          <path d="M44 14 C42 6, 60 4, 56 13 Z" fill="url(#screentone-dots)"/>
+
+          <!-- Chip on the Ground -->
+          <ellipse cx="6" cy="98" rx="8" ry="4" fill="#ffffff" stroke="#141413" stroke-width="1.8" transform="rotate(-15, 6, 98)"/>
+        </svg>
+        <span class="snack-label">CHIPS</span>
+      </div>
+
+      <!-- Wooden Cornerstone Block (Under Umaru's Hammer) -->
+      <div class="site-block-prop" id="prop-block" aria-hidden="true">
+        <svg viewBox="0 0 76 56" width="76" height="56" fill="none">
+          <!-- Wooden Block 3D Isometric View -->
+          <!-- Top Surface -->
+          <polygon points="38,4 72,18 38,32 4,18" fill="#faf8f5" stroke="#141413" stroke-width="2.8" stroke-linejoin="round"/>
+          <!-- Left Side -->
+          <polygon points="4,18 38,32 38,52 4,38" fill="#e8e4dc" stroke="#141413" stroke-width="2.8" stroke-linejoin="round"/>
+          <!-- Right Side -->
+          <polygon points="38,32 72,18 72,38 38,52" fill="#c7c2b8" stroke="#141413" stroke-width="2.8" stroke-linejoin="round"/>
+          <!-- Screentone on Right Shadow -->
+          <polygon points="38,32 72,18 72,38 38,52" fill="url(#screentone-dots)"/>
+
+          <!-- Peg / Nail to Hammer on Top -->
+          <rect x="35" y="10" width="6" height="8" rx="1.5" fill="#141413"/>
+          <ellipse cx="38" cy="10" rx="4.5" ry="2" fill="#726e67"/>
+
+          <!-- Label on Block: < / > -->
+          <text x="21" y="40" font-family="'Patrick Hand', monospace" font-weight="700" font-size="12" fill="#141413" transform="skewY(18)">&lt;/&gt;</text>
+
+          <!-- Manga Impact Spark on Hammer Strike (B&W Starburst) -->
+          <g class="impact-spark" transform="translate(38, 8)">
+            <path d="M0 -12 L3 -3 L12 0 L3 3 L0 12 L-3 3 L-12 0 L-3 -3 Z" fill="#ffffff" stroke="#141413" stroke-width="1.6"/>
+          </g>
+        </svg>
+      </div>
+
+      <!-- Bottle of Coke (Clickable Snack Prop - Manga Black & White) -->
+      <div class="snack-prop snack-coke" id="prop-coke" role="button" tabindex="0" aria-label="Bottle of Cola. Click to fizz!" title="Click to sip chilled cola!">
+        <svg viewBox="0 0 60 120" width="60" height="120" fill="none">
+          <!-- B&W Striped Paper Straw popping out -->
+          <path d="M30 20 L30 6 Q30 -4 42 -4" stroke="#141413" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+          <path d="M30 20 L30 6 Q30 -4 42 -4" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round" stroke-dasharray="3 3" fill="none"/>
+          <path d="M30 20 L30 6 Q30 -4 42 -4" stroke="#141413" stroke-width="1" fill="none"/>
+
+          <!-- White Bottle Cap -->
+          <rect x="23" y="18" width="14" height="8" rx="2" fill="#ffffff" stroke="#141413" stroke-width="2.2"/>
+          <line x1="26" y1="20" x2="26" y2="24" stroke="#141413" stroke-width="1"/>
+          <line x1="30" y1="20" x2="30" y2="24" stroke="#141413" stroke-width="1"/>
+          <line x1="34" y1="20" x2="34" y2="24" stroke="#141413" stroke-width="1"/>
+
+          <!-- Bottle Neck & Body Contour -->
+          <path d="M25 26 L23 40 Q10 50 10 70 L10 106 Q10 114 20 114 L40 114 Q50 114 50 106 L50 70 Q50 50 37 40 L35 26 Z" fill="#ffffff" stroke="#141413" stroke-width="2.8" stroke-linejoin="round"/>
+
+          <!-- Dark Sumi Ink Liquid Inside -->
+          <path d="M24 38 Q12 48 12 70 L12 105 Q12 112 21 112 L39 112 Q48 112 48 105 L48 70 Q48 48 36 38 Z" fill="#141413"/>
+          <!-- Liquid Highlights / Screentone -->
+          <path d="M24 38 Q12 48 12 70 L12 105 Q12 112 21 112 L39 112 Q48 112 48 105 L48 70 Q48 48 36 38 Z" fill="url(#screentone-dots)"/>
+          <path d="M14 65 Q14 100 18 108" stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+
+          <!-- Carbonation Bubbles Rising -->
+          <circle cx="22" cy="98" r="1.8" fill="#ffffff" opacity="0.8"/>
+          <circle cx="34" cy="92" r="2.2" fill="#ffffff" opacity="0.9"/>
+          <circle cx="26" cy="80" r="1.6" fill="#ffffff" opacity="0.8"/>
+          <circle cx="38" cy="72" r="2" fill="#ffffff" opacity="0.9"/>
+          <circle cx="28" cy="60" r="1.8" fill="#ffffff" opacity="0.9"/>
+
+          <!-- Solid Black Brand Label Around Center -->
+          <path d="M11 65 L49 65 L49 89 L11 89 Z" fill="#141413" stroke="#141413" stroke-width="2"/>
+          <!-- Top white trim line -->
+          <line x1="11" y1="68" x2="49" y2="68" stroke="#ffffff" stroke-width="1.2"/>
+          <!-- Bottom white wave accent -->
+          <path d="M11 85 Q30 82 49 85" stroke="#ffffff" stroke-width="1.4" fill="none"/>
+          <!-- Text: COLA -->
+          <text x="30" y="79" font-family="'Fredoka', 'Patrick Hand', cursive, sans-serif" font-weight="700" font-size="12" fill="#ffffff" text-anchor="middle" letter-spacing="1.5">COLA</text>
+        </svg>
+        <span class="snack-label">COLA</span>
+      </div>
+    </div>
+
+    <!-- Hand-drawn Sketch Ground Horizon Line -->
+    <div class="manga-ground-line" id="ground-line" aria-hidden="true"></div>
+  </main>
+
+  <!-- Application Scripts (Zero external runtime dependencies) -->
+  <script defer src="audio.js"></script>
+  <script defer src="particles.js"></script>
+  <script defer src="app.js"></script>
+</body>
+</html>
