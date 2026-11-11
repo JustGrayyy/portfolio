@@ -1269,18 +1269,18 @@ html, body {
 
   .manga-draft-handle {
     top: 36%;
-    width: 90vw;
+    width: min(94vw, 720px);
   }
 
   .draft-watermark {
-    font-size: clamp(1.15rem, 5.2vw, 2.2rem);
+    font-size: clamp(2.1rem, 9.5vw, 3.8rem);
     letter-spacing: -0.04em;
   }
 
   .draft-cursor {
-    height: clamp(1.1rem, 5vw, 2rem);
-    width: 2px;
-    margin: 0 2px;
+    height: clamp(2rem, 9vw, 3.6rem);
+    width: 3px;
+    margin: 0 3px 0 2px;
   }
 
   .draft-ruler,
